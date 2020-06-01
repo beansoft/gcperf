@@ -5,13 +5,17 @@ Visual VM 垃圾回收性能监控插件, 加入对最新版VisualVM 2.0的支�
 
 原始介绍: https://dzone.com/articles/visualvm-gcviewer-plugin
 
-下载: 
+**下载**
 
-gcperf.nbm 中文多语言版 gcperf_en.nbm 英文版
+gcperf.nbm 中文多语言版
+
+ gcperf_en.nbm 英文版
 
  [Java 8(VisualVM 1.0)适用](visualvm1\dist) 
 
  [VisualVM 2.0适用](visualvm2\dist) 
+
+------
 
 术语简单解释:
 
@@ -24,11 +28,11 @@ gcperf.nbm 中文多语言版 gcperf_en.nbm 英文版
 
 其它的GC算法能否显示暂未测试.
 
-运行中文截图:
+运行截图:
 
 ![gcperf_CN](gcperf_CN.png)
 
-原版截图:
+英文截图:
 
 [![GCViewer plugin with all charts enabled](https://dzone.com/sites/all/files/all_alt.PNG)](https://dzone.com/sites/all/files/all_alt.PNG)
 

@@ -19,6 +19,7 @@ public class GcDataCollector {
 
     public static final String MINOR_GC_TIME_KEY = "sun.gc.collector.0.time";
     public static final String MAJOR_GC_TIME_KEY = "sun.gc.collector.1.time";
+    public static final String FULL_GC_TIME_KEY = "sun.gc.collector.2.time";
     public static final String PROMOTED_KEY = "sun.gc.policy.promoted";
     public static final String SURVIVED_KEY = "sun.gc.policy.survived";
     public static final String MINOR_COST_KEY = "sun.gc.policy.minorGcCost";
@@ -29,9 +30,10 @@ public class GcDataCollector {
     private final Map<SimpleXYChartSupport, String[]> charts;
     private final MonitoredValue minorTime;
     private final MonitoredValue majorTime;
+    private final MonitoredValue fullGcTime;
     private final JvmstatModel vm;
 
-    private long lastMinorTime = 0L, lastMajorTime = 0L, currentMinorTime, currentMajorTime;
+    private long lastMinorTime = 0L, lastMajorTime = 0L, lastFullGcTime = 0L, currentMinorTime, currentMajorTime, currentFullGcTime;
     private Map<String, Pair<MonitoredValue, AtomicLong>> monitors = new HashMap<String, Pair<MonitoredValue, AtomicLong>>();
 
     
@@ -40,18 +42,27 @@ public class GcDataCollector {
         this.charts = charts;
         minorTime = vm.findMonitoredValueByName(MINOR_GC_TIME_KEY);
         majorTime = vm.findMonitoredValueByName(MAJOR_GC_TIME_KEY);
+        fullGcTime = vm.findMonitoredValueByName(FULL_GC_TIME_KEY);
         initializeMonitors();
     }
 
     public void checkGc() {
         currentMinorTime = (Long) minorTime.getValue();
         currentMajorTime = (Long) majorTime.getValue();
+        if(fullGcTime != null) {
+            currentFullGcTime = (Long) fullGcTime.getValue();
+            System.out.println("fullGcTime=" + currentFullGcTime);
+        }
         if (currentMinorTime - lastMinorTime != 0
-                || currentMajorTime - lastMajorTime != 0) {
+                || currentMajorTime - lastMajorTime != 0
+                || currentFullGcTime - lastFullGcTime != 0) {
             onGc();
             lastMinorTime = currentMinorTime;
             lastMajorTime = currentMajorTime;
+            lastFullGcTime = currentFullGcTime;
         }
+        
+
     }
 
     private void onGc() {
@@ -67,7 +78,7 @@ public class GcDataCollector {
                 try {
                 currentValue = (Long) monitors.get(dataItems[i]).getLeft().getValue();
                 } catch (Exception e) {
-                    System.out.println("");
+                    System.out.println(dataItems[i]+ "=" + e);
                 }
                 if (previousValue != null) {
                     value = currentValue - previousValue.get();
@@ -84,6 +95,7 @@ public class GcDataCollector {
     private void initializeMonitors() {
         monitors.put(MINOR_GC_TIME_KEY, new Pair<MonitoredValue, AtomicLong>(minorTime, new AtomicLong(Long.MIN_VALUE)));
         monitors.put(MAJOR_GC_TIME_KEY, new Pair<MonitoredValue, AtomicLong>(majorTime, new AtomicLong(Long.MIN_VALUE)));
+        monitors.put(FULL_GC_TIME_KEY, new Pair<MonitoredValue, AtomicLong>(fullGcTime, new AtomicLong(Long.MIN_VALUE)));
         initMonitor(PROMOTED_KEY, null);
         initMonitor(SURVIVED_KEY, null);
         initMonitor(MINOR_COST_KEY, null);

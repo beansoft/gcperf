@@ -71,8 +71,10 @@ class GCViewerView extends DataSourceView {
         dvc = new DataViewComponent(masterView, masterConfiguration);
 
         SimpleXYChartSupport pauseChart = createChart(DataTypeEnum.DECIMAL, ChartTypeEnum.LINE, java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("GC PAUSE TIMES"),
-                new String[]{java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("MINOR GC PAUSE"), java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("MAJOR GC PAUSE")}, java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("<HTML>TIME</HTML>"), java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("<HTML>GC  PAUSE  IN  ΜS</HTML>"),
-                new String[]{GcDataCollector.MINOR_GC_TIME_KEY, GcDataCollector.MAJOR_GC_TIME_KEY});
+                new String[]{java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("MINOR GC PAUSE"), 
+                    java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("MAJOR GC PAUSE"), "Full GC Time" }, 
+                java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("<HTML>TIME</HTML>"), java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("<HTML>GC  PAUSE  IN  ΜS</HTML>"),
+                new String[]{GcDataCollector.MINOR_GC_TIME_KEY, GcDataCollector.MAJOR_GC_TIME_KEY, GcDataCollector.FULL_GC_TIME_KEY});
         dvc.addDetailsView(new DataViewComponent.DetailsView(java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("GC PAUSE TIMES"), "description", 0, pauseChart.getChart(), null), DataViewComponent.TOP_LEFT);
 
         SimpleXYChartSupport survivorChart = createChart(DataTypeEnum.BYTES, ChartTypeEnum.LINE, java.util.ResourceBundle.getBundle("pl/qsoft/gcviewer/Bundle").getString("PROMOTED VS SURVIVED"),
